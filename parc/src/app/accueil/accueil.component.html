@@ -10,8 +10,8 @@
         <span>Difficulté de l'attraction / 5</span>
       </div>
     </div>
-    <ng-container *ngFor="let attraction of attractions | async;">
-      <div class="attraction">
+    <ng-container *ngFor="let attraction of (attractions | async)">
+      <div class="attraction" *ngIf ="(attraction.visible == true)">
         <span>{{attraction.nom}}</span>
         <span>{{attraction.description}}</span>
         <span>{{attraction.difficulte}} / 5</span>
