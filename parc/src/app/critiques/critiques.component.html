@@ -1,0 +1,24 @@
+<mat-card>
+    <mat-card-header>
+      <mat-card-title>Critiques des Attractions</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="titre_critique">
+            <div class="">
+              <span>Nom de l'attraction</span>
+              <span>Auteur</span>
+              <span>Critique</span>
+              <span>Date</span>
+            </div>
+        </div>
+        <ng-container *ngFor="let critique of (critiques | async)">
+            <div class="critiques">
+              <span>{{critique.attraction_id}}</span>
+              <span *ngIf="(critique.anonyme == false)">{{critique.auteur}}</span>
+              <span *ngIf="(critique.anonyme == true)">Anonyme</span>
+              <span>{{critique.texte}}</span>
+              <span>{{critique.date_creation}}</span>
+            </div>
+          </ng-container>
+    </mat-card-content>
+  </mat-card>

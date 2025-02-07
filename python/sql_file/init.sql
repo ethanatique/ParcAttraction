@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS critiques;
 DROP TABLE IF EXISTS attraction;
 
 CREATE TABLE attraction (
@@ -17,3 +18,16 @@ CREATE TABLE users (
     name varchar(255) not null,
     password varchar(255) not null
 );
+
+    
+CREATE TABLE critiques (
+    critiques_id INT AUTO_INCREMENT,
+    attraction_id INT,
+    auteur VARCHAR(255),
+    texte TEXT NOT NULL,
+    anonyme BOOLEAN DEFAULT TRUE,
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (critiques_id),
+    CONSTRAINT fk_attraction FOREIGN KEY (attraction_id) REFERENCES attraction(attraction_id) ON DELETE CASCADE
+);
+
