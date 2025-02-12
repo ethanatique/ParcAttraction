@@ -1,19 +1,60 @@
 .attraction-title {
-  font-size: 18px;
-  font-weight: 500;
-  background-color: darkgrey;
-  width: fit-content;
+  font-size: 20px;
+  font-weight: 600;
+  background-color: #f1f1f1; /* Couleur plus douce */
+  padding: 10px 20px;
+  border-radius: 8px;
   margin-top: 25px;
+  margin-bottom: 15px;
 }
+
 .attraction {
   display: flex;
-  align-items: center;
-  column-gap: 25px;
-  width: fit-content;
+  align-items: flex-start;
+  justify-content: space-between; /* Aligner les éléments aux extrémités */
+  gap: 20px; /* Réduction de l'espacement */
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #fafafa; /* Fond plus doux */
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.1); /* Légère ombre pour donner de la profondeur */
+  margin-bottom: 15px; /* Espacement entre les attractions */
+}
 
-  border-bottom: solid 1px grey;
-  span {
-    padding: 5px;
-    width: 250px;
-  }
+.attraction span {
+  padding: 5px 10px;
+  font-size: 14px;
+  color: #333; /* Meilleure visibilité */
+  width: auto; /* Supprime la largeur fixe */
+  white-space: nowrap; /* Eviter le retour à la ligne */
+  text-overflow: ellipsis; /* Gérer le texte trop long */
+  overflow: hidden;
+}
+
+.critiques-button {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #45a049; /* Animation subtile au survol */
+}
+
+
+.difficulty {
+  display: flex;
+  gap: 5px; /* Espacement entre les étoiles */
+}
+
+.mat-icon {
+  font-size: 20px; /* Taille de l'icône */
+  color: #f4c542; /* Couleur des étoiles */
 }

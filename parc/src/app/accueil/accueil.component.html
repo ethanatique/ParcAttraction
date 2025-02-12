@@ -7,14 +7,18 @@
       <div class="attraction">
         <span>Nom de l'attraction</span>
         <span>Description de l'attraction</span>
-        <span>Difficulté de l'attraction / 5</span>
+        <span>Difficulté de l'attraction</span>
       </div>
     </div>
     <ng-container *ngFor="let attraction of (attractions | async)">
-      <div class="attraction" *ngIf ="(attraction.visible == true)">
+      <div class="attraction" *ngIf="attraction.visible">
         <span>{{attraction.nom}}</span>
         <span>{{attraction.description}}</span>
-        <span>{{attraction.difficulte}} / 5</span>
+        <span class="difficulty">
+          <ng-container *ngFor="let star of getStars(attraction.difficulte)">
+            <mat-icon>{{star}}</mat-icon>
+          </ng-container>
+        </span>
       </div>
     </ng-container>
     <div class="critiques-button">
