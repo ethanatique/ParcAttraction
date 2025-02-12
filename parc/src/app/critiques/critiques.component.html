@@ -13,7 +13,7 @@
         </div>
         <ng-container *ngFor="let critique of (critiques | async)">
             <div class="critiques">
-              <span>{{critique.attraction_id}}</span>
+              <span>{{critique.attraction_nom }}</span>
               <span *ngIf="(critique.anonyme == false)">{{critique.auteur}}</span>
               <span *ngIf="(critique.anonyme == true)">Anonyme</span>
               <span>{{critique.texte}}</span>

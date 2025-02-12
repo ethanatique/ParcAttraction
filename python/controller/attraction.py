@@ -49,7 +49,11 @@ def delete_attraction(id):
     return True
 
 def getAllCritiques():
-    sql_query = "SELECT * FROM critiques"
+    sql_query = """
+        SELECT critiques.*, attraction.nom AS attraction_nom
+        FROM critiques
+        LEFT JOIN attraction  ON critiques.attraction_id = attraction.attraction_id
+    """
     critiques = req.select_from_db(sql_query)
     return critiques
 
