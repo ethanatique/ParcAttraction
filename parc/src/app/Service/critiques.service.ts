@@ -1,5 +1,3 @@
-// critique.service.ts
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -9,7 +7,6 @@ import { CritiqueInterface } from '../Interface/critiques.interface';
   providedIn: 'root'
 })
 export class CritiqueService {
-
   private apiUrl = 'http://127.0.0.1:5000/critiques';
 
   constructor(private http: HttpClient) {}

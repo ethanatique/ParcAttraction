@@ -1,9 +1,8 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-
-import request.request as req
-import controller.auth.auth as user
 import controller.attraction as attraction
+import controller.auth.auth as user
+import request.request as req
 
 app = Flask(__name__)
 CORS(app)
@@ -18,12 +17,12 @@ def addAttraction():
     print("okok", flush=True)
     # Fonction vérif token
     checkToken = user.check_token(request)
-    if (checkToken != True):
+    if checkToken != True:
         return checkToken
 
     json = request.get_json()
     retour = attraction.add_attraction(json)
-    if (retour):
+    if retour:
         return jsonify({"message": "Element ajouté.", "result": retour}), 200
     return jsonify({"message": "Erreur lors de l'ajout.", "result": retour}), 500
 
@@ -39,15 +38,14 @@ def getAttraction(index):
 
 @app.delete('/attraction/<int:index>')
 def deleteAttraction(index):
-
     # Fonction vérif token
     checkToken = user.check_token(request)
-    if (checkToken != True):
+    if checkToken != True:
         return checkToken
 
     json = request.get_json()
-    
-    if (attraction.delete_attraction(index)):
+
+    if attraction.delete_attraction(index):
         return "Element supprimé.", 200
     return jsonify({"message": "Erreur lors de la suppression."}), 500
 
@@ -55,10 +53,10 @@ def deleteAttraction(index):
 def login():
     json = request.get_json()
 
-    if (not 'name' in json or not 'password' in json):
+    if not 'name' in json or not 'password' in json:
         result = jsonify({'messages': ["Nom ou/et mot de passe incorrect"]})
         return result, 400
-    
+
     cur, conn = req.get_db_connection()
     requete = f"SELECT * FROM users WHERE name = '{json['name']}' AND password = '{json['password']}';"
     cur.execute(requete)
@@ -67,7 +65,6 @@ def login():
 
     result = jsonify({"token": user.encode_auth_token(list(records[0])[0]), "name": json['name']})
     return result, 200
-
 
 @app.get('/critiques')
 def get_all_critiques():
@@ -80,3 +77,6 @@ def add_critique():
     if attraction.add_critique(json):
         return jsonify({"message": "Critique ajoutée avec succès"}), 201
     return jsonify({"message": "Erreur lors de l'ajout de la critique"}), 400
+
+if __name__ == '__main__':
+    app.run(debug=True)
