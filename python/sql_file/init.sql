@@ -26,6 +26,7 @@ CREATE TABLE critiques (
     auteur VARCHAR(255),
     texte TEXT NOT NULL,
     anonyme BOOLEAN DEFAULT TRUE,
+    note INT,
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (critiques_id),
     CONSTRAINT fk_attraction FOREIGN KEY (attraction_id) REFERENCES attraction(attraction_id) ON DELETE CASCADE

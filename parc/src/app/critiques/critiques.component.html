@@ -1,58 +1,190 @@
+<style>
+  .form-card {
+    margin: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    background-color: #ffffff;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .form-card:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .form-card-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 12px 12px 0 0;
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+
+  .form-field {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-label {
+    font-size: 1em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+  }
+
+  .form-input, .form-textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+  }
+
+  .form-input:focus, .form-textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    background-color: #fff;
+  }
+
+  .form-checkbox {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .form-button {
+    margin-top: 20px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .form-button:hover {
+    background-color: #0056b3;
+  }
+
+  .critiques-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .critiques-header span {
+    flex: 1;
+    text-align: center;
+    font-weight: bold;
+    color: #555;
+  }
+
+  .critique-card {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .critique-card span {
+    margin-bottom: 10px;
+    font-size: 1em;
+    color: #555;
+  }
+
+  .critique-card span:first-child {
+    font-weight: bold;
+    color: #333;
+  }
+
+  .attraction-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .stars {
+    display: flex;
+    margin-bottom: 10px;
+  }
+
+  .stars mat-icon {
+    color: #ffc107;
+    margin-right: 2px;
+  }
+</style>
+
 <mat-card>
   <mat-card-header>
     <mat-card-title>Critiques des Attractions</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div class="titre_critique">
-      <div class="critiques">
-        <span>Nom de l'attraction</span>
-        <span>Auteur</span>
-        <span>Critique</span>
-        <span>Note</span>
-        <span>Date</span>
-      </div>
+    <div class="critiques-header">
+      <span>Nom de l'attraction</span>
+      <span>Auteur</span>
+      <span>Critique</span>
+      <span>Note</span>
+      <span>Date</span>
     </div>
     <ng-container *ngFor="let critique of (critiques | async)">
-      <div class="critiques">
-        <span>{{ critique.attraction_nom }}</span>
+      <div class="critique-card">
+        <span class="attraction-title">{{ critique.attraction_nom }}</span>
+        <div class="stars">
+          <ng-container *ngFor="let star of getStars(critique.note)">
+            <mat-icon>{{ star }}</mat-icon>
+          </ng-container>
+        </div>
         <span *ngIf="!critique.anonyme">{{ critique.auteur }}</span>
         <span *ngIf="critique.anonyme">Anonyme</span>
         <span>{{ critique.texte }}</span>
-        <span>{{ critique.note }}</span>
         <span>{{ critique.date_creation | date: 'short' }}</span>
       </div>
     </ng-container>
   </mat-card-content>
 </mat-card>
 
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Ajouter une critique</mat-card-title>
-  </mat-card-header>
+<mat-card class="form-card">
+  <div class="form-card-header">Ajouter une critique</div>
   <mat-card-content>
     <form [formGroup]="critiqueForm" (ngSubmit)="soumettreCritique()">
-      <mat-form-field>
-        <mat-label>Nom de l'attraction</mat-label>
-        <mat-select formControlName="attraction_id">
+      <div class="form-field">
+        <label class="form-label">Nom de l'attraction</label>
+        <mat-select formControlName="attraction_id" class="form-input">
           <mat-option *ngFor="let attraction of (attractions | async)" [value]="attraction.attraction_id">
             {{ attraction.nom }}
           </mat-option>
         </mat-select>
-      </mat-form-field>      
+      </div>
 
-      <mat-form-field>
-        <mat-label>Critique</mat-label>
-        <textarea matInput formControlName="texte"></textarea>
-      </mat-form-field>
+      <div class="form-field">
+        <label class="form-label">Critique</label>
+        <textarea matInput formControlName="texte" class="form-textarea"></textarea>
+      </div>
 
-      <mat-form-field>
-        <mat-label>Note</mat-label>
-        <input matInput type="number" formControlName="note" min="0" max="5">
-      </mat-form-field>
+      <div class="form-field">
+        <label class="form-label">Note</label>
+        <input matInput type="number" formControlName="note" min="0" max="5" class="form-input">
+      </div>
 
-      <mat-checkbox formControlName="anonyme">Anonyme</mat-checkbox>
+      <div class="form-checkbox">
+        <mat-checkbox formControlName="anonyme">Anonyme</mat-checkbox>
+      </div>
 
-      <button mat-raised-button color="primary" type="submit">Soumettre</button>
+      <button mat-raised-button color="primary" type="submit" class="form-button">Soumettre</button>
     </form>
   </mat-card-content>
 </mat-card>

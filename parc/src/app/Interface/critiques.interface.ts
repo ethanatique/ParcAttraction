@@ -1,10 +1,10 @@
 export interface CritiqueInterface {
+  critiques_id: number;
   attraction_id: number;
   attraction_nom: string;
-  critiques_id: number;
-  auteur: string | null;
+  auteur: string;
   texte: string;
-  note: number; 
-  date_creation: Date;
+  note: number;
   anonyme: boolean;
+  date_creation: Date;
 }

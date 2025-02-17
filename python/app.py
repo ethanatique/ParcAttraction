@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from flask_cors import CORS
+from flask_cors import CORS # type: ignore
 import controller.attraction as attraction
 import controller.auth.auth as user
 import request.request as req
@@ -77,6 +77,3 @@ def add_critique():
     if attraction.add_critique(json):
         return jsonify({"message": "Critique ajoutée avec succès"}), 201
     return jsonify({"message": "Erreur lors de l'ajout de la critique"}), 400
-
-if __name__ == '__main__':
-    app.run(debug=True)

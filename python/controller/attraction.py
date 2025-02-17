@@ -62,12 +62,15 @@ def add_critique(data):
     if "texte" not in data or data["texte"] == "":
         return False
 
+    if "note" not in data or data["note"] is None:
+        return False
+
     # Si l'auteur est anonyme, ne pas mettre de nom
     auteur = data["auteur"] if not data["anonyme"] else None
 
     requete = """
-        INSERT INTO critiques (attraction_id, auteur, texte, anonyme)
-        VALUES (?, ?, ?, ?)
+        INSERT INTO critiques (attraction_id, auteur, texte, note, anonyme)
+        VALUES (?, ?, ?, ?, ?)
     """
-    req.insert_in_db(requete, (data["attraction_id"], auteur, data["texte"], data["anonyme"]))
+    req.insert_in_db(requete, (data["attraction_id"], auteur, data["texte"], data["note"], data["anonyme"]))
     return True
