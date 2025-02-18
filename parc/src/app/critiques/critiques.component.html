@@ -73,21 +73,6 @@
     background-color: #0056b3;
   }
 
-  .critiques-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    padding: 10px;
-    border-bottom: 1px solid #e0e0e0;
-  }
-
-  .critiques-header span {
-    flex: 1;
-    text-align: center;
-    font-weight: bold;
-    color: #555;
-  }
-
   .critique-card {
     display: flex;
     flex-direction: column;
@@ -126,6 +111,63 @@
     color: #ffc107;
     margin-right: 2px;
   }
+
+  .filter-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .filter-form {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .filter-field {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .filter-label {
+    font-size: 1em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+  }
+
+  .filter-input, .filter-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+  }
+
+  .filter-input:focus, .filter-select:focus {
+    border-color: #007bff;
+    outline: none;
+    background-color: #fff;
+  }
+
+  .filter-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .filter-button:hover {
+    background-color: #0056b3;
+  }
 </style>
 
 <mat-card>
@@ -133,25 +175,46 @@
     <mat-card-title>Critiques des Attractions</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div class="critiques-header">
-      <span>Nom de l'attraction</span>
-      <span>Auteur</span>
-      <span>Critique</span>
-      <span>Note</span>
-      <span>Date</span>
+    <div class="filter-buttons">
+      <button mat-raised-button color="primary" (click)="toggleFilterForm()">
+        {{ showFilterForm ? 'Fermer le filtre' : 'Ouvrir le filtre' }}
+      </button>
+      <button mat-raised-button color="primary" (click)="filterCritiques()">
+        Appliquer le filtre
+      </button>
     </div>
-    <ng-container *ngFor="let critique of (critiques | async)">
-      <div class="critique-card">
-        <span class="attraction-title">{{ critique.attraction_nom }}</span>
-        <div class="stars">
-          <ng-container *ngFor="let star of getStars(critique.note)">
-            <mat-icon>{{ star }}</mat-icon>
-          </ng-container>
+    <div class="filter-form" *ngIf="showFilterForm">
+      <form [formGroup]="filterForm">
+        <div class="filter-field">
+          <label class="filter-label">ID de l'attraction</label>
+          <mat-select formControlName="attraction_id" class="filter-select">
+            <mat-option value="">Toutes les attractions</mat-option>
+            <mat-option *ngFor="let attraction of (attractions | async)" [value]="attraction.attraction_id">
+              {{ attraction.nom }}
+            </mat-option>
+          </mat-select>
         </div>
-        <span *ngIf="!critique.anonyme">{{ critique.auteur }}</span>
-        <span *ngIf="critique.anonyme">Anonyme</span>
-        <span>{{ critique.texte }}</span>
-        <span>{{ critique.date_creation | date: 'short' }}</span>
+      </form>
+    </div>
+    <ng-container *ngIf="filteredCritiques.length > 0">
+      <ng-container *ngFor="let critique of filteredCritiques">
+        <div class="critique-card">
+          <span class="attraction-title">{{ critique.attraction_nom }}</span>
+          <div class="stars">
+            <ng-container *ngFor="let star of getStars(critique.note)">
+              <mat-icon>{{ star }}</mat-icon>
+            </ng-container>
+          </div>
+          <span *ngIf="!critique.anonyme">{{ critique.auteur }}</span>
+          <span *ngIf="critique.anonyme">Anonyme</span>
+          <span>{{ critique.texte }}</span>
+          <span>{{ critique.date_creation | date: 'short' }}</span>
+        </div>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="filteredCritiques.length === 0">
+      <div class="critique-card">
+        <span>Aucune critique ne correspond aux critères de filtrage.</span>
       </div>
     </ng-container>
   </mat-card-content>
